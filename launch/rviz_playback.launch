@@ -1,0 +1,5 @@
+<launch>
+  <master auto="start"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find dlite_sim)/single_robot.rviz" />
+  <!-- <node name="rqt_publisher" pkg="rqt_publisher" type="rqt_publisher" /> -->
+</launch>

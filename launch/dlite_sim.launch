@@ -1,0 +1,11 @@
+<launch>
+  <master auto="start"/>
+  <param name="/use_sim_time" value="true"/>
+  <node pkg="stage_ros" type="stageros" name="stageros" args="$(find dlite_sim)/stage_config/worlds/SDH7.world" respawn="false" >
+    <param name="base_watchdog_timeout" value="0.2"/>
+  </node>
+  <include file="$(find dlite_sim)/move_base_config/slam_gmapping.xml"/>  
+  <node pkg="dlite_sim" name="planner_node" type="planner_node.py" output="screen"> </node>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find dlite_sim)/single_robot.rviz" />
+  <!-- <node name="rqt_publisher" pkg="rqt_publisher" type="rqt_publisher" /> -->
+</launch>
