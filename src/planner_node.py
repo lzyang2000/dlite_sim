@@ -22,7 +22,6 @@ class planner():
         self.vel = np.array([[1, 0, 1], [0, 1, 1], [-1, 0, 1], [0, -1, 1], [1, 1, 1], [
             1, -1, 1], [-1, 1, 1], [-1, -1, 1]])  # x y cost
         self.map_sub = rospy.Subscriber("/map", OccupancyGrid, self.update_map)
-        self.pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
         self.tf_sub = rospy.Subscriber("/odom", Odometry, self.update_pos)
         self.goal_sub = rospy.Subscriber(
             "/move_base_simple/goal", PoseStamped, self.update_goal)
@@ -32,13 +31,6 @@ class planner():
         if self.map is None:
             return [0, 0]
         self.pos = [msg.pose.pose.position.y, msg.pose.pose.position.x]
-        self.update_grid()
-
-        # grid_x = (transform.getOrigin().x() - (int)map.info.origin.position.x) / map.info.resolution;
-        # grid_y = (transform.getOrigin().y() - (int)map.info.origin.position.y) / map.info.resolution;
-        # currentPoint = map.data[grid_y * map.info.width + grid_x];
-
-    def update_grid(self):
         grid_x = int(
             (self.pos[1] - self.map.info.origin.position.x) / self.map.info.resolution)
         grid_y = int(
@@ -46,6 +38,11 @@ class planner():
         self.grid_pos = [grid_y, grid_x]
         self.start = self.grid_pos
 
+
+        # grid_x = (transform.getOrigin().x() - (int)map.info.origin.position.x) / map.info.resolution;
+        # grid_y = (transform.getOrigin().y() - (int)map.info.origin.position.y) / map.info.resolution;
+        # currentPoint = map.data[grid_y * map.info.width + grid_x];
+        
     def h(self, s):
         return 1
 
